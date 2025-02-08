@@ -1,17 +1,16 @@
-'use client'
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+"use client";
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Home,
   Package,
   ShoppingCart,
-  Users,
   LineChart,
-  Settings,
   Menu,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -19,14 +18,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import LogoutButton from "./Logout";
 
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/dashboard/products', icon: Package, label: 'Products' },
-  { href: '/dashboard/orders', icon: ShoppingCart, label: 'Orders' },
-  { href: '/dashboard/customers', icon: Users, label: 'Customers' },
-  { href: '/dashboard/analytics', icon: LineChart, label: 'Analytics' },
-  { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
+  { href: "/dashboard", icon: Home, label: "Dashboard" },
+  { href: "/dashboard/products", icon: Package, label: "Products" },
+  { href: "/dashboard/orders", icon: ShoppingCart, label: "Orders" },
+  { href: "/dashboard/analytics", icon: LineChart, label: "Analytics" },
 ];
 
 // Desktop Sidebar Component
@@ -34,18 +32,24 @@ export function Sidebar() {
   const pathname = usePathname();
   return (
     <div className="hidden md:flex w-64 bg-white border-r min-h-screen flex-col">
-      <div className="p-4 border-b">
-        <h1 className="text-xl font-bold">Admin Dashboard</h1>
+      {/* Logo */}
+      <div className="p-4 border-b flex items-center justify-center">
+        <Image
+          src="/images/furnirologo.png"
+          alt="Furniro Logo"
+          width={150}
+          height={40}
+        />
       </div>
       <nav className="flex-1 p-4 space-y-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
-          
+
           return (
             <Link href={item.href} key={item.href}>
-              <Button 
-                variant={isActive ? "secondary" : "ghost"} 
+              <Button
+                variant={isActive ? "secondary" : "ghost"}
                 className="w-full justify-start"
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -54,6 +58,10 @@ export function Sidebar() {
             </Link>
           );
         })}
+        {/* Logout Button */}
+     
+        <LogoutButton className="w-full mt-4" />
+
       </nav>
     </div>
   );
@@ -63,14 +71,19 @@ export function Sidebar() {
 export function MobileNav() {
   const pathname = usePathname();
   const mainNavItems = navItems.slice(0, 4); // Show only first 4 items in bottom bar
-  const moreNavItems = navItems.slice(4); // Remaining items go to menu
-  
+
   return (
     <>
       {/* Top Header for Mobile */}
       <div className="md:hidden border-b bg-white fixed top-0 left-0 right-0 z-50">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-lg font-bold">Admin Dashboard</h1>
+          {/* Logo */}
+          <Image
+            src="/images/furnirologo.png"
+            alt="Furniro Logo"
+            width={120}
+            height={30}
+          />
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -82,22 +95,9 @@ export function MobileNav() {
                 <SheetTitle>More Options</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-2 mt-4">
-                {moreNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.href;
-                  
-                  return (
-                    <Link href={item.href} key={item.href}>
-                      <Button 
-                        variant={isActive ? "secondary" : "ghost"} 
-                        className="w-full justify-start"
-                      >
-                        <Icon className="mr-2 h-4 w-4" />
-                        {item.label}
-                      </Button>
-                    </Link>
-                  );
-                })}
+                {/* Logout Button in Mobile Menu */}
+                <LogoutButton className="w-full mt-4" />
+
               </nav>
             </SheetContent>
           </Sheet>
@@ -110,13 +110,13 @@ export function MobileNav() {
           {mainNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
-            
+
             return (
-              <Link 
-                href={item.href} 
+              <Link
+                href={item.href}
                 key={item.href}
                 className={`flex flex-col items-center justify-center flex-1 h-full
-                  ${isActive ? 'text-primary' : 'text-gray-500'}`}
+                  ${isActive ? "text-primary" : "text-gray-500"}`}
               >
                 <Icon className="h-5 w-5" />
                 <span className="text-xs mt-1">{item.label}</span>
